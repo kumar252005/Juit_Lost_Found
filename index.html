@@ -1,0 +1,2110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JUIT Lost & Found</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --juit-blue: #0033cc;
+            --juit-gold: #ff9933;
+            --juit-green: #138808;
+            --dark-bg: #000;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f5f5f7;
+            --text-secondary: #a1a1a6;
+            --accent-blue: #0071e3;
+            --accent-gold: #ff9500;
+            --accent-green: #30d158;
+            --header-height: 52px;
+            --section-spacing: 80px;
+            --card-radius: 18px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 51, 204, 0.05) 0%, transparent 55%),
+                radial-gradient(circle at 85% 30%, rgba(255, 153, 51, 0.05) 0%, transparent 55%);
+        }
+
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            backdrop-filter: blur(20px) saturate(180%);
+            background-color: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--juit-blue), var(--juit-green));
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text {
+            font-size: 21px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-gold));
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--text-primary);
+        }
+
+        .dev-login-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dev-login-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .dev-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-green);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .dev-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dev-action-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .dev-action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .delete-btn {
+            background: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 59, 48, 0.3);
+        }
+
+        .edit-btn {
+            background: rgba(255, 149, 0, 0.2);
+            color: var(--accent-gold);
+        }
+
+        .edit-btn:hover {
+            background: rgba(255, 149, 0, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding-top: calc(var(--header-height) + 60px);
+            padding-bottom: var(--section-spacing);
+            text-align: center;
+            max-width: 980px;
+            margin: 0 auto;
+            padding-left: 5%;
+            padding-right: 5%;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            font-size: 24px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.3;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(90deg, var(--juit-blue), var(--accent-blue));
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 113, 227, 0.4);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            padding: var(--section-spacing) 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 60px;
+            letter-spacing: -1px;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .step-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--card-radius);
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+        }
+
+        .step-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--juit-blue), var(--juit-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            font-size: 32px;
+            color: white;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 36px;
+            height: 36px;
+            background: var(--accent-gold);
+            color: var(--dark-bg);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 36px;
+            margin-bottom: 15px;
+        }
+
+        .step-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .step-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: var(--section-spacing);
+            flex-wrap: wrap;
+            padding: 0 5%;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        /* Controls Section */
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin: 0 auto 40px;
+            max-width: 1200px;
+            padding: 0 5%;
+            flex-wrap: wrap;
+        }
+
+        .search-container {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 16px 20px 16px 48px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 17px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+        }
+
+        .search-bar:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .filter-sort-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        select {
+            padding: 16px 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+            min-width: 160px;
+        }
+
+        select:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .new-post-btn {
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-green));
+            color: white;
+            border: none;
+            padding: 16px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .new-post-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(0, 51, 204, 0.3);
+        }
+
+        /* Items Grid */
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--card-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(20px);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .item-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .item-image {
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 51, 204, 0.1), rgba(255, 153, 51, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .item-card:hover .item-image img {
+            transform: scale(1.05);
+        }
+
+        .item-type {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            backdrop-filter: blur(20px);
+        }
+
+        .lost {
+            background: rgba(255, 59, 48, 0.2);
+            color: #ff3b30;
+            border: 1px solid rgba(255, 59, 48, 0.3);
+        }
+
+        .found {
+            background: rgba(52, 199, 89, 0.2);
+            color: #34c759;
+            border: 1px solid rgba(52, 199, 89, 0.3);
+        }
+
+        .item-details {
+            padding: 24px;
+        }
+
+        .item-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .item-meta {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .item-description {
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .item-contact {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .contact-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(20px);
+        }
+
+        .contact-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(1.05);
+        }
+
+        .days-left {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .expiring {
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        .no-items {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-items i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        /* Enquiries Section */
+        .enquiries-section {
+            margin-top: 20px;
+            border-top: 1px solid var(--card-border);
+            padding-top: 20px;
+        }
+
+        .enquiries-toggle {
+            background: none;
+            border: none;
+            color: var(--accent-blue);
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            transition: var(--transition);
+            font-size: 15px;
+        }
+
+        .enquiries-toggle:hover {
+            color: var(--text-primary);
+        }
+
+        .enquiries-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .enquiries-list.expanded {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .enquiry-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .enquiry-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .add-enquiry {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .add-enquiry input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .add-enquiry input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .add-enquiry-btn {
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 12px 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .add-enquiry-btn:hover {
+            background: #0077ed;
+            transform: scale(1.05);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: var(--section-spacing) 5%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-container {
+            margin-top: 40px;
+        }
+
+        .faq-item {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .faq-question {
+            padding: 20px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .faq-question:hover {
+            color: var(--accent-blue);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .faq-answer.expanded {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+
+        .faq-icon {
+            transition: var(--transition);
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 5%;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: rgba(28, 28, 30, 0.9);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: modalAppear 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-green));
+            color: white;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 51, 204, 0.3);
+        }
+
+        .expiry-notice {
+            background: rgba(255, 153, 51, 0.1);
+            padding: 16px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid var(--juit-gold);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Developer Login Modal */
+        .login-form {
+            padding: 20px 0;
+        }
+
+        .login-btn {
+            background: linear-gradient(90deg, var(--juit-blue), var(--juit-green));
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(0, 51, 204, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero p {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .contact-info {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 40px;
+            }
+            
+            .hero p {
+                font-size: 20px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .filter-sort-container {
+                width: 100%;
+            }
+            
+            select {
+                flex: 1;
+            }
+            
+            .stats {
+                gap: 30px;
+            }
+            
+            .stat-value {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .items-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-value {
+                font-size: 32px;
+            }
+            
+            .section-title {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <div class="logo">JUIT</div>
+            <div class="logo-text">Lost & <span>Found</span></div>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="#" class="nav-link">Home</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#items" class="nav-link">Browse Items</a>
+            <a href="#faq" class="nav-link">FAQ</a>
+        </nav>
+        
+        <div class="contact-info">
+            <a href="https://www.linkedin.com/in/aaditya-kumar-8b5348319" class="contact-link" target="_blank">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a href="tel:9315923254" class="contact-link">
+                <i class="fas fa-phone"></i>
+            </a>
+            <div id="devLoginContainer">
+                <button class="dev-login-btn" id="devLoginBtn">
+                    <i class="fas fa-user-shield"></i> Developer
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Find What You've Lost.<br>Return What You've Found.</h1>
+        <p>The official JUIT Lost & Found platform. Reuniting students with their belongings since 2023.</p>
+        <button class="cta-button" id="heroCtaBtn">
+            <i class="fas fa-plus-circle"></i> Report an Item
+        </button>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="step-number">1</div>
+                <h3 class="step-title">Report Lost or Found Item</h3>
+                <p class="step-description">Fill out a simple form with details about the item you've lost or found. Add a description, location, and contact information.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-bell"></i>
+                </div>
+                <div class="step-number">2</div>
+                <h3 class="step-title">Get Notified</h3>
+                <p class="step-description">Our system will automatically match lost and found items. You'll be notified when there's a potential match for your item.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-icon">
+                    <i class="fas fa-handshake"></i>
+                </div>
+                <div class="step-number">3</div>
+                <h3 class="step-title">Connect & Reunite</h3>
+                <p class="step-description">Once a match is found, you can directly contact the other person through the provided contact information to arrange pickup.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <div class="stats">
+        <div class="stat-card">
+            <div class="stat-value" id="totalItems">0</div>
+            <div class="stat-label">Active Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="lostItems">0</div>
+            <div class="stat-label">Lost Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="foundItems">0</div>
+            <div class="stat-label">Found Items</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="enquiriesCount">0</div>
+            <div class="stat-label">Enquiries</div>
+        </div>
+    </div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <div class="search-container">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-bar" placeholder="Search for items..." id="searchInput">
+        </div>
+        <div class="filter-sort-container">
+            <select id="filterSelect">
+                <option value="all">All Items</option>
+                <option value="lost">Lost Items</option>
+                <option value="found">Found Items</option>
+            </select>
+            <select id="sortSelect">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="expiring">Expiring Soon</option>
+            </select>
+        </div>
+        <button class="new-post-btn" id="newPostBtn">
+            <i class="fas fa-plus"></i> Report Item
+        </button>
+    </div>
+
+    <!-- Items Grid -->
+    <div class="items-grid" id="itemsGrid">
+        <!-- Items will be dynamically added here -->
+    </div>
+
+    <!-- FAQ Section -->
+    <section class="faq-section" id="faq">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How long are items kept in the system?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>All items and their associated images are automatically deleted after 7 days. This helps keep the system current and ensures we're only showing active lost and found items.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Is there any cost to use this service?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>No, the JUIT Lost & Found service is completely free for all students and staff. Our goal is to help reunite people with their lost belongings without any financial barrier.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What should I do if I find someone's belongings?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>If you find a lost item, please report it through our system with as much detail as possible. Include where and when you found it, and provide contact information so the owner can reach you.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How can I increase the chances of finding my lost item?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Provide a detailed description, include specific identifying features, upload clear photos if possible, and be accurate about when and where you lost the item. The more information you provide, the better your chances.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What types of items can I report?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>You can report any personal belongings - textbooks, electronics, ID cards, keys, water bottles, clothing, bags, and other items commonly used by students on campus.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What if my item isn't found within 7 days?</span>
+                    <i class="fas fa-chevron-down faq-icon"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>If your item isn't found within the 7-day period, you can submit a new report. We recommend also checking with campus security and relevant department offices where your item might have been turned in.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Post Modal -->
+    <div class="modal" id="newPostModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Report Lost/Found Item</h2>
+                <button class="close-btn" id="closeNewPostModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="newPostForm">
+                    <div class="form-group">
+                        <label>Item Type</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="lost" name="type" value="lost" checked>
+                                <label for="lost">Lost</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="found" name="type" value="found">
+                                <label for="found">Found</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="title">Item Title</label>
+                        <input type="text" id="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Info (Email/Phone)</label>
+                        <input type="text" id="contact">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Upload Image (Optional)</label>
+                        <input type="file" id="image" accept="image/*">
+                    </div>
+                    <div class="expiry-notice">
+                        <i class="fas fa-exclamation-circle"></i> Note: Images and posts auto-delete after 7 days.
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Report</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Developer Login Modal -->
+    <div class="modal" id="devLoginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Developer Login</h2>
+                <button class="close-btn" id="closeDevLoginModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="login-form" id="devLoginForm">
+                    <div class="form-group">
+                        <label for="devUsername">Username</label>
+                        <input type="text" id="devUsername" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="devPassword">Password</label>
+                        <input type="password" id="devPassword" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login as Developer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Item Modal -->
+    <div class="modal" id="editItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Item</h2>
+                <button class="close-btn" id="closeEditItemModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="editItemForm">
+                    <input type="hidden" id="editItemId">
+                    <div class="form-group">
+                        <label>Item Type</label>
+                        <div class="radio-group">
+                            <div class="radio-option">
+                                <input type="radio" id="editLost" name="editType" value="lost">
+                                <label for="editLost">Lost</label>
+                            </div>
+                            <div class="radio-option">
+                                <input type="radio" id="editFound" name="editType" value="found">
+                                <label for="editFound">Found</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTitle">Item Title</label>
+                        <input type="text" id="editTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Description</label>
+                        <textarea id="editDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editLocation">Location</label>
+                        <input type="text" id="editLocation">
+                    </div>
+                    <div class="form-group">
+                        <label for="editContact">Contact Info (Email/Phone)</label>
+                        <input type="text" id="editContact">
+                    </div>
+                    <div class="form-group">
+                        <label for="editImage">Upload New Image (Optional)</label>
+                        <input type="file" id="editImage" accept="image/*">
+                    </div>
+                    <button type="submit" class="submit-btn">Update Item</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>JUIT Lost & Found System | For more details and queries: 9315923254</p>
+        <p>Images and posts auto-delete after 7 days.</p>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const itemsGrid = document.getElementById('itemsGrid');
+        const newPostBtn = document.getElementById('newPostBtn');
+        const heroCtaBtn = document.getElementById('heroCtaBtn');
+        const newPostModal = document.getElementById('newPostModal');
+        const closeNewPostModal = document.getElementById('closeNewPostModal');
+        const newPostForm = document.getElementById('newPostForm');
+        const searchInput = document.getElementById('searchInput');
+        const filterSelect = document.getElementById('filterSelect');
+        const sortSelect = document.getElementById('sortSelect');
+        const totalItemsEl = document.getElementById('totalItems');
+        const lostItemsEl = document.getElementById('lostItems');
+        const foundItemsEl = document.getElementById('foundItems');
+        const enquiriesCountEl = document.getElementById('enquiriesCount');
+        const devLoginBtn = document.getElementById('devLoginBtn');
+        const devLoginModal = document.getElementById('devLoginModal');
+        const closeDevLoginModal = document.getElementById('closeDevLoginModal');
+        const devLoginForm = document.getElementById('devLoginForm');
+        const devLoginContainer = document.getElementById('devLoginContainer');
+        const editItemModal = document.getElementById('editItemModal');
+        const closeEditItemModal = document.getElementById('closeEditItemModal');
+        const editItemForm = document.getElementById('editItemForm');
+        const faqItems = document.querySelectorAll('.faq-item');
+
+        // Developer credentials
+        const DEV_USERNAME = "Aaditya Kumar";
+        const DEV_PASSWORD = "Aditya8199";
+
+        // Sample initial data
+        let items = JSON.parse(localStorage.getItem('juitLostFoundItems')) || [
+            {
+                id: 1,
+                type: 'lost',
+                title: 'Student ID Card',
+                description: 'Lost my student ID card near the library. Name: Rahul Sharma, ID: JUIT2023001',
+                location: 'Library',
+                contact: 'rahul.sharma@mail.juit.ac.in',
+                image: null,
+                date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+                expiry: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),
+                enquiries: [
+                    { id: 1, message: 'I think I saw this at the admin desk yesterday.', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString() },
+                    { id: 2, message: 'Check with the library security, they might have it.', date: new Date().toISOString() }
+                ]
+            },
+            {
+                id: 2,
+                type: 'found',
+                title: 'Water Bottle',
+                description: 'Found a blue water bottle in the cafeteria.',
+                location: 'Cafeteria',
+                contact: '',
+                image: null,
+                date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+                expiry: new Date(Date.now() + 6 * 24 * 60 * 60 * 1000).toISOString(),
+                enquiries: [
+                    { id: 1, message: 'Is it a Milton bottle? I lost mine yesterday.', date: new Date().toISOString() }
+                ]
+            },
+            {
+                id: 3,
+                type: 'lost',
+                title: 'Textbook - Data Structures',
+                description: 'Lost my Data Structures textbook. Has my name written inside: Priya Verma',
+                location: 'Academic Block B',
+                contact: 'priya.verma@mail.juit.ac.in',
+                image: null,
+                date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+                expiry: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+                enquiries: []
+            }
+        ];
+
+        // Check if developer is logged in
+        let isDeveloperLoggedIn = localStorage.getItem('juitDevLoggedIn') === 'true';
+
+        // Initialize the app
+        function init() {
+            // Remove expired items
+            removeExpiredItems();
+            
+            // Update stats
+            updateStats();
+            
+            // Update developer UI
+            updateDevUI();
+            
+            // Render items with staggered animation
+            renderItemsWithAnimation(items);
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Add scroll animation for items
+            setupScrollAnimations();
+            
+            // Setup FAQ functionality
+            setupFAQ();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // New post modal
+            newPostBtn.addEventListener('click', () => {
+                newPostModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            heroCtaBtn.addEventListener('click', () => {
+                newPostModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+            
+            closeNewPostModal.addEventListener('click', () => {
+                newPostModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Developer login modal
+            devLoginBtn.addEventListener('click', () => {
+                if (isDeveloperLoggedIn) {
+                    logoutDeveloper();
+                } else {
+                    devLoginModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+            
+            closeDevLoginModal.addEventListener('click', () => {
+                devLoginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Edit item modal
+            closeEditItemModal.addEventListener('click', () => {
+                editItemModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            // Form submissions
+            newPostForm.addEventListener('submit', handleNewPost);
+            devLoginForm.addEventListener('submit', handleDevLogin);
+            editItemForm.addEventListener('submit', handleEditItem);
+            
+            // Search and filter
+            searchInput.addEventListener('input', handleSearch);
+            filterSelect.addEventListener('change', handleFilter);
+            sortSelect.addEventListener('change', handleSort);
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === newPostModal) {
+                    newPostModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+                if (e.target === devLoginModal) {
+                    devLoginModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+                if (e.target === editItemModal) {
+                    editItemModal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Setup FAQ functionality
+        function setupFAQ() {
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                const answer = item.querySelector('.faq-answer');
+                
+                question.addEventListener('click', () => {
+                    // Close all other FAQ items
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            otherItem.querySelector('.faq-answer').classList.remove('expanded');
+                        }
+                    });
+                    
+                    // Toggle current item
+                    item.classList.toggle('active');
+                    answer.classList.toggle('expanded');
+                });
+            });
+        }
+
+        // Setup scroll animations
+        function setupScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationDelay = '0s';
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all item cards
+            document.querySelectorAll('.item-card').forEach(card => {
+                observer.observe(card);
+            });
+        }
+
+        // Remove expired items
+        function removeExpiredItems() {
+            const now = new Date();
+            items = items.filter(item => new Date(item.expiry) > now);
+            saveItems();
+        }
+
+        // Save items to localStorage
+        function saveItems() {
+            localStorage.setItem('juitLostFoundItems', JSON.stringify(items));
+            updateStats();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalItems = items.length;
+            const lostItems = items.filter(item => item.type === 'lost').length;
+            const foundItems = items.filter(item => item.type === 'found').length;
+            
+            let totalEnquiries = 0;
+            items.forEach(item => {
+                totalEnquiries += item.enquiries ? item.enquiries.length : 0;
+            });
+            
+            // Animate counting up
+            animateValue(totalItemsEl, 0, totalItems, 800);
+            animateValue(lostItemsEl, 0, lostItems, 800);
+            animateValue(foundItemsEl, 0, foundItems, 800);
+            animateValue(enquiriesCountEl, 0, totalEnquiries, 800);
+        }
+
+        // Animate value counting up
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        // Update developer UI based on login status
+        function updateDevUI() {
+            if (isDeveloperLoggedIn) {
+                devLoginContainer.innerHTML = `
+                    <div class="dev-indicator">
+                        <i class="fas fa-user-shield"></i>
+                        <span>Aaditya Kumar</span>
+                        <div class="dev-actions">
+                            <button class="dev-action-btn" id="devLogoutBtn">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('devLogoutBtn').addEventListener('click', logoutDeveloper);
+            } else {
+                devLoginContainer.innerHTML = `
+                    <button class="dev-login-btn" id="devLoginBtn">
+                        <i class="fas fa-user-shield"></i> Developer
+                    </button>
+                `;
+                
+                document.getElementById('devLoginBtn').addEventListener('click', () => {
+                    devLoginModal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+        }
+
+        // Handle developer login
+        function handleDevLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('devUsername').value;
+            const password = document.getElementById('devPassword').value;
+            
+            if (username === DEV_USERNAME && password === DEV_PASSWORD) {
+                // Successful login
+                isDeveloperLoggedIn = true;
+                localStorage.setItem('juitDevLoggedIn', 'true');
+                
+                // Update UI
+                updateDevUI();
+                
+                // Close modal
+                devLoginModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                
+                // Show success message
+                showNotification('Developer login successful!', 'success');
+                
+                // Re-render items to show admin controls
+                renderItemsWithAnimation(items);
+            } else {
+                // Failed login
+                showNotification('Invalid username or password!', 'error');
+            }
+            
+            // Clear form
+            devLoginForm.reset();
+        }
+
+        // Logout developer
+        function logoutDeveloper() {
+            isDeveloperLoggedIn = false;
+            localStorage.removeItem('juitDevLoggedIn');
+            
+            // Update UI
+            updateDevUI();
+            
+            // Show logout message
+            showNotification('Developer logged out successfully!', 'success');
+            
+            // Re-render items to hide admin controls
+            renderItemsWithAnimation(items);
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: ${type === 'success' ? 'var(--accent-green)' : '#ff3b30'}; color: white; padding: 12px 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 3000; display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Delete item
+        function deleteItem(itemId) {
+            if (!isDeveloperLoggedIn) {
+                showNotification('You must be logged in as a developer to delete items!', 'error');
+                return;
+            }
+            
+            if (confirm('Are you sure you want to delete this item?')) {
+                items = items.filter(item => item.id !== itemId);
+                saveItems();
+                renderItemsWithAnimation(items);
+                showNotification('Item deleted successfully!', 'success');
+            }
+        }
+
+        // Edit item
+        function editItem(itemId) {
+            if (!isDeveloperLoggedIn) {
+                showNotification('You must be logged in as a developer to edit items!', 'error');
+                return;
+            }
+            
+            const item = items.find(i => i.id === itemId);
+            if (!item) return;
+            
+            // Fill the edit form with item data
+            document.getElementById('editItemId').value = item.id;
+            document.getElementById('editTitle').value = item.title;
+            document.getElementById('editDescription').value = item.description || '';
+            document.getElementById('editLocation').value = item.location || '';
+            document.getElementById('editContact').value = item.contact || '';
+            
+            // Set the correct radio button
+            if (item.type === 'lost') {
+                document.getElementById('editLost').checked = true;
+            } else {
+                document.getElementById('editFound').checked = true;
+            }
+            
+            // Show the edit modal
+            editItemModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Handle edit item form submission
+        function handleEditItem(e) {
+            e.preventDefault();
+            
+            const itemId = parseInt(document.getElementById('editItemId').value);
+            const type = document.querySelector('input[name="editType"]:checked').value;
+            const title = document.getElementById('editTitle').value;
+            const description = document.getElementById('editDescription').value;
+            const location = document.getElementById('editLocation').value;
+            const contact = document.getElementById('editContact').value;
+            const imageFile = document.getElementById('editImage').files[0];
+            
+            // Find the item to update
+            const itemIndex = items.findIndex(item => item.id === itemId);
+            if (itemIndex === -1) return;
+            
+            // Update the item
+            items[itemIndex].type = type;
+            items[itemIndex].title = title;
+            items[itemIndex].description = description;
+            items[itemIndex].location = location;
+            items[itemIndex].contact = contact;
+            
+            // Handle image update
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    items[itemIndex].image = e.target.result;
+                    saveItems();
+                    renderItemsWithAnimation(items);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveItems();
+                renderItemsWithAnimation(items);
+            }
+            
+            // Close modal and show success message
+            editItemModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            showNotification('Item updated successfully!', 'success');
+            
+            // Reset form
+            editItemForm.reset();
+        }
+
+        // Render items with staggered animation
+        function renderItemsWithAnimation(itemsToRender) {
+            itemsGrid.innerHTML = '';
+            
+            if (itemsToRender.length === 0) {
+                itemsGrid.innerHTML = `
+                    <div class="no-items">
+                        <i class="fas fa-search"></i>
+                        <h3>No items found matching your criteria.</h3>
+                        <p>Try adjusting your search or filters.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            itemsToRender.forEach((item, index) => {
+                const daysLeft = Math.ceil((new Date(item.expiry) - new Date()) / (1000 * 60 * 60 * 24));
+                const daysLeftClass = daysLeft <= 2 ? 'expiring' : '';
+                
+                const itemCard = document.createElement('div');
+                itemCard.className = 'item-card';
+                itemCard.style.animationDelay = `${index * 0.1}s`;
+                itemCard.style.animationPlayState = 'paused';
+                itemCard.innerHTML = `
+                    <div class="item-image">
+                        ${item.image ? `<img src="${item.image}" alt="${item.title}">` : '<i class="fas fa-image" style="font-size: 48px;"></i>'}
+                        <div class="item-type ${item.type}">${item.type.toUpperCase()}</div>
+                        ${isDeveloperLoggedIn ? `
+                            <div class="dev-actions" style="position: absolute; top: 16px; left: 16px; display: flex; gap: 8px;">
+                                <button class="dev-action-btn edit-btn" data-id="${item.id}">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="dev-action-btn delete-btn" data-id="${item.id}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="item-details">
+                        <h3 class="item-title">${item.title}</h3>
+                        <div class="item-meta">
+                            <span><i class="far fa-calendar"></i> ${formatDate(item.date)}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${item.location || 'Unknown Location'}</span>
+                        </div>
+                        <p class="item-description">${item.description || 'No description provided.'}</p>
+                        
+                        <div class="enquiries-section">
+                            <button class="enquiries-toggle">
+                                <i class="fas fa-comments"></i> 
+                                ${item.enquiries ? item.enquiries.length : 0} Enquiry${item.enquiries && item.enquiries.length !== 1 ? 'ies' : ''}
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <div class="enquiries-list">
+                                ${item.enquiries && item.enquiries.length > 0 ? 
+                                    item.enquiries.map(enquiry => `
+                                        <div class="enquiry-item">
+                                            <div class="enquiry-meta">
+                                                <span>Anonymous</span>
+                                                <span>${formatDate(enquiry.date)}</span>
+                                            </div>
+                                            <p>${enquiry.message}</p>
+                                        </div>
+                                    `).join('') : 
+                                    '<p style="text-align: center; color: var(--text-secondary); font-style: italic; padding: 10px;">No enquiries yet</p>'
+                                }
+                                <div class="add-enquiry">
+                                    <input type="text" placeholder="Add your enquiry..." class="enquiry-input" data-id="${item.id}">
+                                    <button class="add-enquiry-btn" data-id="${item.id}"><i class="fas fa-paper-plane"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-contact">
+                            ${item.contact ? 
+                                `<a href="${item.contact.includes('@') ? 'mailto:' + item.contact : 'tel:' + item.contact}" class="contact-btn">
+                                    <i class="fas fa-envelope"></i> Contact
+                                </a>` : 
+                                `<button class="contact-btn" data-id="${item.id}">
+                                    <i class="fas fa-question-circle"></i> Enquire
+                                </button>`
+                            }
+                            <span class="days-left ${daysLeftClass}">${daysLeft} day${daysLeft !== 1 ? 's' : ''} left</span>
+                        </div>
+                    </div>
+                `;
+                
+                itemsGrid.appendChild(itemCard);
+            });
+            
+            // Add event listeners to enquiry toggles
+            document.querySelectorAll('.enquiries-toggle').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const enquiriesList = e.target.closest('.enquiries-section').querySelector('.enquiries-list');
+                    const icon = e.target.querySelector('.fa-chevron-down');
+                    
+                    enquiriesList.classList.toggle('expanded');
+                    if (icon) {
+                        icon.classList.toggle('fa-chevron-down');
+                        icon.classList.toggle('fa-chevron-up');
+                    }
+                });
+            });
+            
+            // Add event listeners to enquiry buttons
+            document.querySelectorAll('.add-enquiry-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    const input = document.querySelector(`.enquiry-input[data-id="${itemId}"]`);
+                    const message = input.value.trim();
+                    
+                    if (message) {
+                        addEnquiry(itemId, message);
+                        input.value = '';
+                        
+                        // Show confirmation animation
+                        const btnIcon = e.target.querySelector('i');
+                        btnIcon.className = 'fas fa-check';
+                        setTimeout(() => {
+                            btnIcon.className = 'fas fa-paper-plane';
+                        }, 1000);
+                    }
+                });
+            });
+            
+            // Add event listeners to enquiry inputs (Enter key)
+            document.querySelectorAll('.enquiry-input').forEach(input => {
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const itemId = parseInt(e.target.getAttribute('data-id'));
+                        const message = e.target.value.trim();
+                        
+                        if (message) {
+                            addEnquiry(itemId, message);
+                            e.target.value = '';
+                        }
+                    }
+                });
+            });
+            
+            // Add event listeners to contact buttons without contact info
+            document.querySelectorAll('.contact-btn:not([href])').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const itemId = parseInt(e.target.getAttribute('data-id'));
+                    const enquiriesSection = e.target.closest('.item-details').querySelector('.enquiries-section');
+                    const enquiriesList = enquiriesSection.querySelector('.enquiries-list');
+                    const toggle = enquiriesSection.querySelector('.enquiries-toggle');
+                    const icon = toggle.querySelector('.fa-chevron-down, .fa-chevron-up');
+                    
+                    // Expand the enquiries section
+                    enquiriesList.classList.add('expanded');
+                    if (icon) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                    
+                    // Focus on the input
+                    const input = enquiriesSection.querySelector('.enquiry-input');
+                    input.focus();
+                });
+            });
+            
+            // Add event listeners to developer action buttons
+            if (isDeveloperLoggedIn) {
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const itemId = parseInt(e.target.closest('.delete-btn').getAttribute('data-id'));
+                        deleteItem(itemId);
+                    });
+                });
+                
+                document.querySelectorAll('.edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const itemId = parseInt(e.target.closest('.edit-btn').getAttribute('data-id'));
+                        editItem(itemId);
+                    });
+                });
+            }
+        }
+
+        // Format date for display
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric' 
+            });
+        }
+
+        // Handle new post form submission
+        function handleNewPost(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const type = document.querySelector('input[name="type"]:checked').value;
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const location = document.getElementById('location').value;
+            const contact = document.getElementById('contact').value;
+            const imageFile = document.getElementById('image').files[0];
+            
+            // Create new item
+            const newItem = {
+                id: Date.now(),
+                type,
+                title,
+                description,
+                location,
+                contact,
+                image: null,
+                date: new Date().toISOString(),
+                expiry: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+                enquiries: []
+            };
+            
+            // Handle image upload
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newItem.image = e.target.result;
+                    addItem(newItem);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                addItem(newItem);
+            }
+            
+            // Reset form and close modal
+            newPostForm.reset();
+            newPostModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            
+            // Show success feedback
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Submitted Successfully!';
+            submitBtn.style.background = 'linear-gradient(90deg, var(--accent-green), #30d158)';
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = 'linear-gradient(90deg, var(--juit-blue), var(--juit-green))';
+            }, 2000);
+        }
+
+        // Add new item to the list
+        function addItem(item) {
+            items.unshift(item);
+            saveItems();
+            renderItemsWithAnimation(items);
+        }
+
+        // Add enquiry to an item
+        function addEnquiry(itemId, message) {
+            const item = items.find(i => i.id === itemId);
+            
+            if (!item) return;
+            
+            if (!item.enquiries) {
+                item.enquiries = [];
+            }
+            
+            item.enquiries.push({
+                id: Date.now(),
+                message,
+                date: new Date().toISOString()
+            });
+            
+            saveItems();
+            renderItemsWithAnimation(items);
+        }
+
+        // Handle search
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredItems = items.filter(item => 
+                item.title.toLowerCase().includes(searchTerm) || 
+                (item.description && item.description.toLowerCase().includes(searchTerm)) ||
+                (item.location && item.location.toLowerCase().includes(searchTerm))
+            );
+            renderItemsWithAnimation(filteredItems);
+        }
+
+        // Handle filter
+        function handleFilter() {
+            const filterValue = filterSelect.value;
+            let filteredItems = items;
+            
+            if (filterValue !== 'all') {
+                filteredItems = items.filter(item => item.type === filterValue);
+            }
+            
+            renderItemsWithAnimation(filteredItems);
+        }
+
+        // Handle sort
+        function handleSort() {
+            const sortValue = sortSelect.value;
+            let sortedItems = [...items];
+            
+            switch(sortValue) {
+                case 'newest':
+                    sortedItems.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    break;
+                case 'oldest':
+                    sortedItems.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    break;
+                case 'expiring':
+                    sortedItems.sort((a, b) => new Date(a.expiry) - new Date(b.expiry));
+                    break;
+            }
+            
+            renderItemsWithAnimation(sortedItems);
+        }
+
+        // Initialize the app
+        init();
+    </script>
+</body>
+</html>
